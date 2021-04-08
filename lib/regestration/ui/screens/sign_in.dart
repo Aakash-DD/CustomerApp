@@ -24,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget build(BuildContext context) {
-    final logo = Hero(
+   /* final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
           backgroundColor: Colors.transparent,
@@ -37,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
               height: 120.0,
             ),
           )),
-    );
+    );*/
 
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
@@ -127,7 +127,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      logo,
+                      Padding(
+                        padding: const EdgeInsets.only(top:50),
+                        child: Center(
+                          child: Text(
+                            "deepbrothers",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: Colors.blue,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 32.0),
+                          ),
+                        ),
+                      ),
+                      //logo,
                       SizedBox(height: 48.0),
                       email,
                       SizedBox(height: 24.0),

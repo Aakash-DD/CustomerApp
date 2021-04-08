@@ -21,9 +21,9 @@ class User {
   String lastName;
   String number;
   String email;
-  String location;
-  String fl;
-  String w_fl;
+  //String location;
+  //String fl;
+  //String w_fl;
 
   User(
       {this.userId,
@@ -31,9 +31,10 @@ class User {
       this.lastName,
       this.number,
       this.email,
-      this.location,
-      this.fl,
-      this.w_fl});
+    /*  this.location,
+      this.fl,*/
+      //this.w_fl
+      });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
       userId: json["userId"],
@@ -41,9 +42,10 @@ class User {
       lastName: json["lastName"],
       number: json["number"],
       email: json["email"],
-      location: json["location"],
-      fl: json["finalLocation"],
-      w_fl: json["w_finalLocation"]);
+      //location: json["location"],
+      //fl: json["finalLocation"],
+      //w_fl: json["w_finalLocation"]
+      );
 
   Map<String, dynamic> toJson() => {
         "userId": userId,
@@ -51,9 +53,9 @@ class User {
         "lastName": lastName,
         "number": number,
         "email": email,
-        "location": location,
+      /*  "location": location,
         "finalLocation": fl,
-        "w_finalLocation": w_fl
+        "w_finalLocation": w_fl*/
       };
 
   factory User.fromDocument(DocumentSnapshot doc) {

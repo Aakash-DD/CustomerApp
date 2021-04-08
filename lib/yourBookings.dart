@@ -1,16 +1,11 @@
-import 'package:car1/rideDetails.dart';
-import 'package:car1/select_time.dart';
-import 'package:car1/task.dart';
-import 'package:car1/userLocation.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firestoreservice.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'task.dart';
+import 'issue.dart';
 import 'dart:async';
 import 'package:car1/regestration/models/state.dart';
-import 'package:car1/regestration/models/user.dart';
 import 'package:car1/regestration/util/state_widget.dart';
+import 'rating.dart';
 
 class yourBookings extends StatefulWidget {
   @override
@@ -23,11 +18,10 @@ class _yourBookingsState extends State<yourBookings> {
 
   @override
   Widget build(BuildContext context) {
-    appState = StateWidget.of(context).state;
-    //final userId = appState?.firebaseUserAuth?.uid ?? '';
-    final w_fl = appState?.user?.w_fl ?? '';
+    appState = StateWidget
+        .of(context)
+        .state;
     final number = appState?.user?.number ?? '';
-    final lastName = appState?.user?.lastName ?? '';
 
     Future getPosts() async {
       var firestore = Firestore.instance;
@@ -38,18 +32,13 @@ class _yourBookingsState extends State<yourBookings> {
           .getDocuments();
       return qn.documents;
     }
-/*
-    navigateToDetail(DocumentSnapshot post1) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => DetailPage(post: post1)));
-    }*/
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Your Bookings :"),
       ),
       body: Container(
-        child: FutureBuilder(
+        child:FutureBuilder(
             future: getPosts(),
             builder: (_, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,60 +46,101 @@ class _yourBookingsState extends State<yourBookings> {
                   child: Text("Loading ..."),
                 );
               } else {
+                // ignore: unrelated_type_equality_checks
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (_, index) {
+                      Widget image_carousel = new Container(
+                        height: 200.0,
+                        child: new Carousel(
+                          //borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                          boxFit: BoxFit.fitHeight,
+                          images: [
+                            Image.network(
+                                "${snapshot.data[index].data["driverImage"]}"),
+                            Image.network(
+                                "${snapshot.data[index].data["carImage"]}")
+                          ],
+                          autoplay: true,
+                          animationCurve: Curves.fastOutSlowIn,
+                          animationDuration: Duration(milliseconds: 1000),
+                          dotSize: 4.0,
+                          indicatorBgPadding: 6.0,
+                          dotBgColor: Colors.transparent,
+                        ),
+                      );
                       return Card(
                         child: ListTile(
-                          /*onTap: () {
-                            //  DetailPage(snapshot.data[index]);
-                            navigateToDetail(snapshot.data[index]);
-                          },*/
                           title: Column(
                             children: <Widget>[
-                              Container(
-                                width: 150,
-                                height: 150,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new NetworkImage(snapshot
-                                            .data[index].data["driverImage"]))),
+                              Text(
+                                "Status:  ${snapshot.data[index]
+                                    .data["status"]}",
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-//                                Image.network(snapshot.data[index].data["driverImage"]),
+                              SizedBox(height: 10),
+                              image_carousel,
                               SizedBox(height: 10),
                               Text(
-                                  "Name:  ${snapshot.data[index].data["driverName"]}"),
+                                  "Name:  ${snapshot.data[index]
+                                      .data["driverName"]}"),
                               SizedBox(height: 10),
                               Text(
-                                  "Gender:  ${snapshot.data[index].data["gender"]}"),
+                                  "Gender:  ${snapshot.data[index]
+                                      .data["gender"]}"),
                               SizedBox(height: 10),
                               Text(
-                                  "Experience:  ${snapshot.data[index].data["experience"]}"),
+                                  "Experience:  ${snapshot.data[index]
+                                      .data["experience"]}"),
                               SizedBox(height: 10),
                               Text(
-                                  "Number:  ${snapshot.data[index].data["driverNumber"]}"),
+                                  "Number:  ${snapshot.data[index]
+                                      .data["driverNumber"]}"),
                               SizedBox(height: 10),
                               Text(
-                                  "Status:  ${snapshot.data[index].data["status"]}"),
+                                  "Time:  ${snapshot.data[index]
+                                      .data["time"]}"),
                               SizedBox(height: 10),
                               Text(
-                                  "Time:  ${snapshot.data[index].data["time"]}"),
+                                  "Scheduled on:  ${snapshot.data[index]
+                                      .data["rideOn"]}"),
                               SizedBox(height: 10),
                               RaisedButton(
                                 color: Colors.black,
-                                onPressed: (){
-
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => new issue()));
                                 },
-                                child: Text("Cancel",style: TextStyle(color: Colors.white),),
-                              )
+                                child: Text(
+                                  "Having issue",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              RaisedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => rating1()));
+                                },
+                                child: Text("Rate driver"),
+                              ),
+                              SizedBox(height: 40),
                             ],
                           ),
                         ),
                       );
                     });
+
+
+                // ignore: unrelated_type_equality_checks
               }
+              /*else {
+                return Text("Book ur 1st ride now!");*/
+
             }),
       ),
     );
